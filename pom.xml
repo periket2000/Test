@@ -1,0 +1,84 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ef</groupId>
+    <packaging>jar</packaging>
+    <artifactId>parser</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <build>
+        <finalName>parser</finalName>
+        <!-- resources -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <!-- plugins -->
+        <plugins>
+            <!-- any other plugins -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <!-- developers -->
+    <developers>
+        <developer>
+            <id>2</id>
+            <name>Marco Albero</name>
+            <email>periket2000@gmail.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+    <!-- Project properties -->
+    <properties>
+        <hibernate.version>4.3.8.Final</hibernate.version>
+        <log4j.version>1.2.16</log4j.version>
+        <mysql.version>5.1.6</mysql.version>
+        <database.persistence.unit>wallethub_banned</database.persistence.unit>
+        <database.url>jdbc:mysql://localhost/wallethub</database.url>
+        <database.user>dedup</database.user>
+        <database.pass>dedup</database.pass>
+    </properties>
+    <!-- Project dependencies -->
+    <dependencies>
+        <!-- mysql dep -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+        <!-- JPA -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <!-- log4j -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+    </dependencies>
+</project>

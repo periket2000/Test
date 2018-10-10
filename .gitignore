@@ -1,0 +1,9 @@
+*.log
+.DS_Store
+/*.idea
+/logs
+resources/local.properties
+src/main/*.iml
+*.iml
+/target
+*~
