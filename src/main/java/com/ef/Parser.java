@@ -75,6 +75,11 @@ public class Parser {
         final EntityManager em = new PersistenceFactory(this.properties).getEntityManager();
         PipedFileLogParseBannedService banService = new PipedFileLogParseBannedService();
         PipedFileLogParseRequestService rawService = new PipedFileLogParseRequestService();
+        String logPath = (String)options.get("accesslog");
+        if(logPath != null) {
+            this.input = new FileInputStream(logPath);
+            this.input2 = new FileInputStream(logPath);
+        }
         try {
             em.getTransaction().begin();
 

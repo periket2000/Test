@@ -14,6 +14,10 @@ public class CommandLineParser {
     private static String daily_period = "daily";
     private static String hourly_period = "hourly";
 
+    private CommandLineParser() {
+        throw new IllegalAccessError("Utility class");
+    }
+
     /**
      * Parse each individual option of the command line.
      * @param option
@@ -42,10 +46,13 @@ public class CommandLineParser {
                     break;
                 case "--threshold":
                     int threshold = Integer.parseInt(pair[1]);
-                    if(threshold < 1) {
+                    if(threshold < 0) {
                         throw new ParseException(argsThresholdWrong, 0);
                     }
                     map.put(pair[0].substring(2), threshold);
+                    break;
+                case "--accesslog":
+                    map.put(pair[0].substring(2), pair[1]);
                     break;
                 default:
                     throw new ParseException(argsWrong + " " + pair[0], 0);
@@ -78,7 +85,7 @@ public class CommandLineParser {
                 return;
             }
         });
-        if(map.size() != 3) {
+        if(map.size() < 3) {
             logger.error(argsException);
             throw new ParseException(argsException, 0);
         }
