@@ -37,16 +37,17 @@ public class Parser {
         try {
             // Dynamic configuration file location (remember add the directory to the classpath)
             this.propertiesFile = System.getenv("WALLETHUB_PARSER_PROPERTIES_FILE");
+            final String inputFileProp = "parser.input.file";
             if (null == this.propertiesFile) {
                 this.propertiesFile = "META-INF/config.properties";
                 this.properties = PropertiesLoader.loadProperties(this.propertiesFile);
-                this.input = Parser.class.getClassLoader().getResourceAsStream(properties.getProperty("parser.input.file"));
-                this.input2 = Parser.class.getClassLoader().getResourceAsStream(properties.getProperty("parser.input.file"));
+                this.input = Parser.class.getClassLoader().getResourceAsStream(properties.getProperty(inputFileProp));
+                this.input2 = Parser.class.getClassLoader().getResourceAsStream(properties.getProperty(inputFileProp));
             } else {
                 this.properties = new Properties();
                 this.properties.load(new FileInputStream(this.propertiesFile));
-                this.input = new FileInputStream(properties.getProperty("parser.input.file"));
-                this.input2 = new FileInputStream(properties.getProperty("parser.input.file"));
+                this.input = new FileInputStream(properties.getProperty(inputFileProp));
+                this.input2 = new FileInputStream(properties.getProperty(inputFileProp));
             }
 
             // Update the log file destination
