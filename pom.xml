@@ -40,6 +40,23 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>1.1.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>${junit.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
     <!-- developers -->
@@ -58,6 +75,7 @@
         <hibernate.version>4.3.8.Final</hibernate.version>
         <log4j.version>1.2.16</log4j.version>
         <mysql.version>5.1.6</mysql.version>
+        <junit.version>5.1.0</junit.version>
         <database.persistence.unit>wallethub_banned</database.persistence.unit>
         <database.url>jdbc:mysql://localhost/wallethub</database.url>
         <database.user>dedup</database.user>
@@ -87,6 +105,12 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>${log4j.version}</version>
+        </dependency>
+        <!-- JUnit -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
         </dependency>
     </dependencies>
 </project>
