@@ -24,3 +24,14 @@ CREATE TABLE banned
   end_date DATETIME,
   PRIMARY KEY(id)
 );
+
+CREATE TABLE requests
+(
+  id BIGINT  NOT NULL AUTO_INCREMENT,
+  ip VARCHAR(255),
+  request_date DATETIME,
+  request VARCHAR(255),
+  request_status VARCHAR(255),
+  request_agent VARCHAR(255),
+  PRIMARY KEY(id)
+);

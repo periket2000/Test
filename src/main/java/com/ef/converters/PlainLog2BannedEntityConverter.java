@@ -10,7 +10,7 @@ import java.util.Date;
  * Concrete implementation of a converter.
  * Transform an array of strings in a BannedEntity
  */
-public class PlainLog2EntityConverter implements ConverterInterface<BannedEntity, String[]> {
+public class PlainLog2BannedEntityConverter implements ConverterInterface<BannedEntity, String[]> {
 
     SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 

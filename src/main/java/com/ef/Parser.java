@@ -1,6 +1,7 @@
 package com.ef;
 
 import com.ef.entities.BannedEntity;
+import com.ef.entities.RequestsEntity;
 import com.ef.factories.PersistenceFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -10,7 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.*;
-import com.ef.services.logparse.pipedfile.PipedFileLogParseService;
+import com.ef.services.logparse.pipedfile.PipedFileLogParseBannedService;
+import com.ef.services.logparse.pipedfile.PipedFileLogParseRequestService;
 import com.ef.utils.CommandLineParser;
 import com.ef.utils.PropertiesLoader;
 import org.apache.log4j.LogManager;
@@ -24,6 +26,7 @@ public class Parser {
     private Properties properties;
     private static Logger logger = LogManager.getLogger(Parser.class.getName());
     private InputStream input;
+    private InputStream input2;
     private String propertiesFile;
 
     /**
@@ -38,10 +41,12 @@ public class Parser {
                 this.propertiesFile = "META-INF/config.properties";
                 this.properties = PropertiesLoader.loadProperties(this.propertiesFile);
                 this.input = Parser.class.getClassLoader().getResourceAsStream(properties.getProperty("parser.input.file"));
+                this.input2 = Parser.class.getClassLoader().getResourceAsStream(properties.getProperty("parser.input.file"));
             } else {
                 this.properties = new Properties();
                 this.properties.load(new FileInputStream(this.propertiesFile));
                 this.input = new FileInputStream(properties.getProperty("parser.input.file"));
+                this.input2 = new FileInputStream(properties.getProperty("parser.input.file"));
             }
 
             // Update the log file destination
@@ -68,22 +73,32 @@ public class Parser {
         logger.info("Parser started!");
         final EntityManager em = new PersistenceFactory(this.properties).getEntityManager();
         logger.info("Adding new entries");
-        PipedFileLogParseService service = new PipedFileLogParseService();
+        PipedFileLogParseBannedService banService = new PipedFileLogParseBannedService();
+        PipedFileLogParseRequestService rawService = new PipedFileLogParseRequestService();
         try {
             em.getTransaction().begin();
 
             if(Boolean.valueOf(properties.getProperty("database.truncate.table"))) {
                 // Clear table on each run
                 CriteriaBuilder builder = em.getCriteriaBuilder();
-                CriteriaDelete<BannedEntity> query = builder.createCriteriaDelete(BannedEntity.class);
-                query.from(BannedEntity.class);
-                em.createQuery(query).executeUpdate();
+                CriteriaDelete<BannedEntity> q = builder.createCriteriaDelete(BannedEntity.class);
+                q.from(BannedEntity.class);
+                em.createQuery(q).executeUpdate();
+                CriteriaDelete<RequestsEntity> q2 = builder.createCriteriaDelete(RequestsEntity.class);
+                q2.from(RequestsEntity.class);
+                em.createQuery(q2).executeUpdate();
             }
 
             // Run the parsing and aggregation
-            service.parse(this.input, options).stream().forEach(a ->
+            banService.parse(this.input, options).stream().forEach(a ->
                 em.persist(a)
             );
+
+            // Run the parsing and raw store
+            rawService.parse(this.input2, options).stream().forEach(a ->
+                    em.persist(a)
+            );
+
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.info(e);

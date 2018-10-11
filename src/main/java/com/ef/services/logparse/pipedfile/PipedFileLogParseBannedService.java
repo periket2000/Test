@@ -1,6 +1,6 @@
 package com.ef.services.logparse.pipedfile;
 
-import com.ef.converters.PlainLog2EntityConverter;
+import com.ef.converters.PlainLog2BannedEntityConverter;
 import com.ef.entities.BannedEntity;
 import com.ef.services.logparse.LogParseInterface;
 import org.apache.log4j.LogManager;
@@ -15,9 +15,9 @@ import static java.util.stream.Collectors.summingInt;
 /**
  * Concrete implementation of the parser.
  */
-public class PipedFileLogParseService implements LogParseInterface<List<BannedEntity>, InputStream> {
+public class PipedFileLogParseBannedService implements LogParseInterface<List<BannedEntity>, InputStream> {
 
-    private static Logger logger = LogManager.getLogger(PipedFileLogParseService.class.getName());
+    private static Logger logger = LogManager.getLogger(PipedFileLogParseBannedService.class.getName());
 
     /**
      * Parse a file passed as parameter
@@ -30,7 +30,7 @@ public class PipedFileLogParseService implements LogParseInterface<List<BannedEn
         result = br.lines().collect(Collectors.toList()).stream().map(line -> {
             String[] fields = line.split("\\|");
             try {
-                return new PlainLog2EntityConverter().convert(fields);
+                return new PlainLog2BannedEntityConverter().convert(fields);
             } catch (ParseException e) {
                 logger.info(e);
                 return null;
