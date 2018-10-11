@@ -8,10 +8,13 @@ import javax.persistence.Persistence;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Persistence Factory. This class is for getting the EntityManager in charge
+ * of persisting the Entities.
+ */
 public class PersistenceFactory {
     private EntityManagerFactory emFactory;
-    public PersistenceFactory() throws IOException {
-        Properties properties = PropertiesLoader.loadProperties("META-INF/config.properties");
+    public PersistenceFactory(Properties properties) throws IOException {
         emFactory = Persistence.createEntityManagerFactory(properties.getProperty("database.persistence.unit"));
     }
 
