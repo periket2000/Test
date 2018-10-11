@@ -1,0 +1,9 @@
+Query 1: (IPs that made more than 100 requests starting from 2017-01-01.13:00:00 to 2017-01-01.14:00:00)
+
+select ip, count(*) hits from requests
+where request_date BETWEEN '2017-01-01.13:00:00' AND '2017-01-01.14:00:00'
+GROUP BY ip HAVING hits > 100;
+
+Query 2: (Requests made by a given IP, in this case 192.168.77.101)
+
+select * from requests where ip = '192.168.77.101';

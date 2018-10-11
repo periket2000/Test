@@ -3,6 +3,9 @@ package com.ef.entities;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * JPA Entity that reference to the banned DB table.
+ */
 @Entity(name = "banned")
 public class BannedEntity {
 
