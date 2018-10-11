@@ -56,18 +56,19 @@ public class PipedFileLogParseBannedService implements LogParseInterface<List<Ba
                 .collect(groupingBy(BannedEntity::getBanned_ip, summingInt(BannedEntity::getRequests)))
                 .entrySet().stream()
                 .filter(x -> x.getValue() > threshold)
-                .map(x ->
-                        new BannedEntity().banned_ip(x.getKey())
-                                .requests(x.getValue())
-                                .start_date((Date) criteria.get(startDateLiteral))
-                                .run("--startDate=" + ((Date) criteria.get(startDateLiteral)).toString()
-                                        + " --duration=" + criteria.get("duration")
-                                        + " --threshold=" + threshold)
-                                .comment("IP requested more than "
-                                        + threshold
-                                        + " requests "
-                                        + " on a " + criteria.get("duration") + " basis.")
-                                .end_date(new Date())
-                ).collect(Collectors.toList());
+                .map(x -> {
+                    System.out.println("Banned: " + x.getKey());
+                    return new BannedEntity().banned_ip(x.getKey())
+                            .requests(x.getValue())
+                            .start_date((Date) criteria.get(startDateLiteral))
+                            .run("--startDate=" + ((Date) criteria.get(startDateLiteral)).toString()
+                                    + " --duration=" + criteria.get("duration")
+                                    + " --threshold=" + threshold)
+                            .comment("IP requested more than "
+                                    + threshold
+                                    + " requests "
+                                    + " on a " + criteria.get("duration") + " basis.")
+                            .end_date(new Date());
+                }).collect(Collectors.toList());
     }
 }
