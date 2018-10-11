@@ -73,7 +73,6 @@ public class Parser {
     public void run(Map<String, Object> options) throws IOException{
         logger.info("Parser started!");
         final EntityManager em = new PersistenceFactory(this.properties).getEntityManager();
-        logger.info("Adding new entries");
         PipedFileLogParseBannedService banService = new PipedFileLogParseBannedService();
         PipedFileLogParseRequestService rawService = new PipedFileLogParseRequestService();
         try {
@@ -91,11 +90,13 @@ public class Parser {
             }
 
             // Run the parsing and aggregation
+            logger.info("Writing banned IPs");
             banService.parse(this.input, options).stream().forEach(a ->
                 em.persist(a)
             );
 
             // Run the parsing and raw store
+            logger.info("Writing raw requests");
             rawService.parse(this.input2, options).stream().forEach(a ->
                     em.persist(a)
             );
