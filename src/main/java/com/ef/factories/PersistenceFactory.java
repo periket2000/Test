@@ -1,7 +1,5 @@
 package com.ef.factories;
 
-import com.ef.utils.PropertiesLoader;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

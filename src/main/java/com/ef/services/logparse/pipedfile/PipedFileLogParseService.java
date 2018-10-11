@@ -1,8 +1,8 @@
-package com.ef.services.log_parse.piped_file_log_parse;
+package com.ef.services.logparse.pipedfile;
 
 import com.ef.converters.PlainLog2EntityConverter;
 import com.ef.entities.BannedEntity;
-import com.ef.services.log_parse.LogParseInterface;
+import com.ef.services.logparse.LogParseInterface;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import java.io.*;
@@ -46,11 +46,12 @@ public class PipedFileLogParseService implements LogParseInterface<List<BannedEn
      * @return
      */
     public List<BannedEntity> parse(InputStream input, Map<String, Object> criteria) {
+        final String startDateLiteral = "startDate";
         int threshold = (Integer) criteria.get("threshold");
         return this.parse(input).stream().filter(element -> {
-            Date start_date = (Date) criteria.get("startDate");
-            Date end_date = (Date) criteria.get("endDate");
-            return element.getStart_date().after(start_date) && element.getStart_date().before(end_date);
+            Date startDate = (Date) criteria.get(startDateLiteral);
+            Date endDate = (Date) criteria.get("endDate");
+            return element.getStart_date().after(startDate) && element.getStart_date().before(endDate);
         }).collect(Collectors.toList()).stream()
                 .collect(groupingBy(BannedEntity::getBanned_ip, summingInt(BannedEntity::getRequests)))
                 .entrySet().stream()
@@ -58,8 +59,8 @@ public class PipedFileLogParseService implements LogParseInterface<List<BannedEn
                 .map(x ->
                         new BannedEntity().banned_ip(x.getKey())
                                 .requests(x.getValue())
-                                .start_date((Date) criteria.get("startDate"))
-                                .run("--startDate=" + ((Date) criteria.get("startDate")).toString()
+                                .start_date((Date) criteria.get(startDateLiteral))
+                                .run("--startDate=" + ((Date) criteria.get(startDateLiteral)).toString()
                                         + " --duration=" + criteria.get("duration")
                                         + " --threshold=" + threshold)
                                 .comment("IP requested more than "

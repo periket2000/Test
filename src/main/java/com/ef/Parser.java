@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.*;
-import com.ef.services.log_parse.piped_file_log_parse.PipedFileLogParseService;
+import com.ef.services.logparse.pipedfile.PipedFileLogParseService;
 import com.ef.utils.CommandLineParser;
 import com.ef.utils.PropertiesLoader;
 import org.apache.log4j.LogManager;
