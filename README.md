@@ -1,6 +1,7 @@
 # Test
 
 Repository for testing, coming from branch3
+commit4
 
 ## Prerequisites:
 * Java 8.
