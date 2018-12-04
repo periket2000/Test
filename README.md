@@ -1,5 +1,7 @@
 # Test
 
+Repository for testing, coming from branch2
+
 ## Prerequisites:
 * Java 8.
 * Maven 3.3.9
